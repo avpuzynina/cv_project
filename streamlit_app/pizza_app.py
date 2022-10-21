@@ -22,6 +22,7 @@ def load_image(image_file):
 
 def main():
     st.title("Пицца или не пицца?")
+    st.write('Для классификации пицц/не пицц использовалась предобученная сеть **ResNet18**')
     image_file = st.file_uploader("Загрузите изображение", type=["png","jpg","jpeg"])
     if image_file is not None:
     #     file_details = {"filename":image_file.name, "filetype":image_file.type,
@@ -44,7 +45,7 @@ def main():
 
         model = torch.hub.load("pytorch/vision:v0.10.0", "resnet18")
         model.fc = nn.Linear(512, 1)
-        model.load_state_dict(torch.load('/home/anna/cv_project/model_pizza.pt', map_location=torch.device('cpu')))
+        model.load_state_dict(torch.load('model_pizza.pt', map_location=torch.device('cpu')))
 
         model.eval()
         # plt.imshow(torch.permute(img, (1, 2, 0)))
