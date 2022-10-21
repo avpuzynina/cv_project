@@ -12,15 +12,13 @@ from torchvision import io
 import numpy as np
 import matplotlib.pyplot as plt
 
-print("Sreamlit version", st.__version__)
+# print("Sreamlit version", st.__version__)
+
 
 def load_image(image_file):
-    img = io.read_image(image_file)
+    img = Image.open(image_file)
     return img
 
-def init_model():
-    model = torch.load_state_dict(torch.load('/home/anna/cv_project/model_pizza.pt', map_location=torch.device('cpu')))
-    return model
 
 def main():
     st.title("File Upload Tutorial")
@@ -41,10 +39,12 @@ def main():
 
         resize = T.Resize((224, 224))
         img = resize(load_image(image_file)/255)
-        # model.eval()
+        model = torch.load_state_dict(torch.load('/home/anna/cv_project/model_pizza.pt', map_location=torch.device('cpu')))
+        model.eval()
         # plt.imshow(torch.permute(img, (1, 2, 0)))
-        # plt.title(decode(torch.round(model(img.unsqueeze(0)).sigmoid()).item()))
+        label = decode(torch.round(model(img.unsqueeze(0)).sigmoid()).item())
         st.image(load_image(image_file), width=250)
+        st.title(label)
         
 
 if __name__ == "__main__":
